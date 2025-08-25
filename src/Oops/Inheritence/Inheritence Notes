@@ -1,0 +1,18 @@
+==> Diamond problem.
+class A {
+    void show() { System.out.println("A"); }
+}
+
+class B extends A {
+    void show() { System.out.println("B"); }
+}
+
+class C extends A {
+    void show() { System.out.println("C"); }
+}
+
+// If Java allowed this:
+class D extends B, C { } // ❌ Not allowed
+D obj = new D();
+obj.show(); // ❓ B’s version or C’s version?
+Ambiguity arises. Java can't resolve which show() to call. This is called the diamond problem.
