@@ -1,0 +1,290 @@
+Introduction
+An Error in Java is a serious problem that occurs at runtime (during the execution of a program).
+Errors usually happen due to system-level issues (like memory shortage or JVM crash) rather than problems in the application logic.
+Errors are beyond the control of the programmer and generally cannot be recovered from within the code.
+For Example :
+StackOverflowError
+Occurs when there is deep or infinite recursion.
+Program:
+public class StackErrorExample
+{
+    public static void main(String[] args)
+    {
+        main(null); // infinite recursive call
+    }
+}
+OutOfMemoryError
+Occurs when the JVM runs out of memory to allocate new objects.
+Program:
+import java.util.ArrayList;
+public class MemoryErrorExample
+{
+    public static void main(String[] args)
+    {
+        ArrayList list = new ArrayList<>();
+        while (true)
+        {
+            list.add(new int[1000000]); // keeps consuming memory
+        }
+    }
+}
+VirtualMachineError
+Thrown when the Java Virtual Machine (JVM) encounters a serious internal problem.
+Example:
+JVM crash due to insufficient resources.
+Rare, but indicates JVM is in unstable state.
+ Types of Errors in Java
+Errors in Java can be broadly divided into three main categories
+
+Compile-Time Errors
+Errors that occur when the program is being compiled.
+These are detected by the compiler before execution.
+Program cannot run until these errors are fixed.
+Examples :
+Lexical Errors
+Mistakes in keywords or identifiers.
+Example: statc instead of static, viod instead of void.
+Syntax Errors
+Violation of Java grammar rules.
+Example: Missing semicolon ;, wrong variable declaration, wrong method declaration/calling.
+Semantic Errors
+Code is syntactically correct but meaningless.
+Example: int x = "hello";
+Type Checking Errors
+Mismatch of data types.
+Example: Assigning a String to an int.
+Runtime Errors
+Occur while the program is running (after compilation).
+Caused by invalid operations at runtime.
+These are of 2 types:
+Errors (serious problems, not recoverable):
+Thrown by JVM, usually not handled in programs.
+Example:
+StackOverflowError
+OutOfMemoryError
+Exceptions (recoverable problems):
+Handled using try-catch.
+Example:
+ArithmeticException → divide by zero
+NullPointerException → accessing null object
+ArrayIndexOutOfBoundsException → invalid array index
+Logical Errors (hardest to detect)
+Program runs successfully but gives incorrect result due to wrong logic.
+Its not detected by compiler or JVM.
+For Example :
+// Example of Logical Error
+public class LogicalErrorExample
+{
+    public static void main(String[] args)
+    {
+        int side = 5;
+        int area = 4 * side;  // Wrong formula
+        System.out.println("Area = " + area); // Incorrect result
+    }
+}
+ Error Class Hierarchy
+Error is the pre-defined class in Java which inherits the Throwable class.
+Below is the hierarchy of Error class in Java.
+Error Class Hierarchy in Java
+Points to remember:
+Object class is the parent class of all the classes in Java
+Throwable class is the parent class of Error class in Java.
+All the error classes are considered unchecked (because they are not checked by the compiler).
+Difference between Error and Exception in Java:
+Error: Represents serious problems in the JVM that cannot be handled by the program.
+Exception: Represents conditions that can be caught and handled by the program.
+
+
+Try-With-Resource in Java Exception Handling
+ Introduction
+In previous topics, we have learned about the finally block which is used to execute cleanup code and release resources like files, database connections, or network streams.
+But managing resources manually can be error-prone and lead to resource leaks if not handled properly.
+Also we have write a lot of boilerplate code to ensure resources are closed properly.
+To address these issues, Java 7 introduced the try-with-resources.
+Definition:
+Try-With-Resources is a feature introduced in Java 7 that allows you to declare resources in the try statement.
+These resources are automatically closed at the end of the try block, eliminating the need for a finally block for cleanup.
+A resource is any object that implements the AutoCloseable or Closeable interface (like FileInputStream, BufferedReader, Scanner, Connection etc.).
+Use:
+Automatically closes resources after use, avoiding resource leaks.
+Reduces boilerplate code, no need for explicit finally blocks for closing.
+Makes code cleaner, safer and more readable.
+Ensures exception-safe resource management, even if exceptions occur in the try block.
+Syntax:
+try (ResourceType resource = new ResourceType())
+{
+    // use the resource
+}
+catch (ExceptionClassType e)
+{
+    // handle exception
+}
+Multiple resources can be declared using semicolon ; separation
+try ( ResourceType1 res1 = new ResourceType1();
+       ResourceType2 res2 = new ResourceType2() )
+{
+    // use resources
+}
+catch (ExceptionClassType e)
+{
+    // handle exception
+}
+Example:
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class TryWithResourcesDemo
+{
+    public static void main(String[] args)
+    {
+        System.out.println("----- App Started -----");
+
+        // try-with-resources automatically closes BufferedReader
+        try (BufferedReader br = new BufferedReader(new FileReader("test.txt")))
+        {
+            String line;
+            while ((line = br.readLine()) != null)
+            {
+                System.out.println(line);
+            }
+        }
+        catch (IOException e)
+        {
+            System.out.println("IOException occurred: " + e);
+        }
+
+        System.out.println("----- App Finished Successfully -----");
+    }
+}
+Output:
+----- App Started -----
+Line 1 from test.txt
+Line 2 from test.txt
+...
+----- App Finished Successfully -----
+ Points to remember for Try-With-Resource block:
+No need for explicit finally block to close the resource.
+Resources must implement AutoCloseable or Closeable.
+Multiple resources can be managed in a single try statement.
+Exceptions during resource closing are suppressed but can be retrieved using Throwable.getSuppressed().
+
+
+throw" vs "throws" in Java
+ throw vs throws
+throw
+The throw keyword is used to actually throw an exception object from a method or block of code.
+It can throw only one exception object at a time.
+Mostly used for unchecked exceptions but can also throw checked exceptions (requires handling).
+Syntax example :-
+throw new IOException("File not found");
+throws
+The throws keyword is used in a method declaration to declare the exceptions that a method might throw.
+We can declare one or multiple exceptions, separated by commas.
+Mainly used for checked exceptions, but can also declare unchecked exceptions (not necessary).
+Syntax example :-
+void readFile() throws IOException, SQLException { }
+ Below are some differences between throw and throws:
+Aspect	 throw	 throws
+Definition	Used to actually throw an exception object from a method or block of code.	Used in method declaration to declare the exceptions that a method might throw.
+Usage Location	Inside a method or a block of code.	In method or constructor declaration only.
+Number of Exceptions	Can throw only one exception object at a time.	Can declare multiple exceptions separated by commas.
+Checked / Unchecked	Can throw both checked and unchecked exceptions.	Mainly for checked exceptions; can declare unchecked exceptions but not necessary.
+Effect on Caller	Immediately transfers the exception to the caller.	Informs the caller that it should handle the declared exceptions.
+Example	throw new IOException("File not found");	void readFile() throws IOException, SQLException { }
+Requirement	Checked exceptions must be handled using try-catch or declared with throws.	Caller must handle checked exceptions declared with throws.
+
+
+
+User-Defined Custom Exceptions in Java
+ Introduction
+Till now we have seen built-in exceptions in Java like IOException, NullPointerException, etc., and how to handle them using throw and throws.
+But sometimes in real-world applications, we encounter situations where these built-in exceptions are not sufficient to describe specific error conditions.
+For example, consider a banking application:
+You want to throw an exception when a customer tries to withdraw more money than their account balance.
+Java does not provide a built-in exception specifically for this scenario.
+For such cases, user-defined exceptions (also called custom exceptions) are introduced.
+Definition:
+A user-defined exception in Java is an exception that is created by the programmer to represent a specific error scenario not covered by Java’s built-in exceptions.
+It extends the Exception class (for checked exceptions) or the RuntimeException class (for unchecked exceptions).
+It can include custom error messages and methods if needed.
+Uses:
+To represent application-specific errors clearly.
+To make error handling more readable and meaningful.
+To enforce business rules in an application (e.g., invalid transactions, age restrictions, invalid input).
+To make debugging and maintenance easier by providing descriptive messages.
+ Steps to Create a User-Defined Exception
+Create a new class that extends Exception (for checked exceptions) or RuntimeException (for unchecked exceptions).
+Define constructors in your class (usually one default constructor and one that accepts a custom message).
+Use the throw keyword to throw the exception object in your code when the specific condition occurs.
+Handle the exception using try-catch or propagate it using throws.
+ Example :
+// Step 1: Create a user-defined exception
+class InsufficientBalanceException extends Exception
+{
+    // Constructor with custom message
+    public InsufficientBalanceException(String message)
+    {
+        super(message);
+    }
+}
+
+// Step 2: Use the custom exception in application
+class BankAccount
+{
+    private double balance;
+
+    public BankAccount(double balance)
+    {
+        this.balance = balance;
+    }
+
+    // Withdraw method which may throw the user-defined exception
+    public void withdraw(double amount) throws InsufficientBalanceException
+    {
+        if(amount > balance)
+        {
+            throw new InsufficientBalanceException("Withdrawal failed: Insufficient balance!");
+        }
+        else
+        {
+            balance -= amount;
+            System.out.println("Withdrawal successful. Remaining balance: " + balance);
+        }
+    }
+}
+
+public class MainApp
+{
+    public static void main(String[] args)
+    {
+        BankAccount account = new BankAccount(5000);
+
+        try
+        {
+            account.withdraw(6000); // Trying to withdraw more than balance
+        }
+        catch (InsufficientBalanceException e)
+        {
+            System.out.println("Exception caught: " + e.getMessage());
+        }
+
+        try
+        {
+            account.withdraw(3000); // Valid withdrawal
+        }
+        catch (InsufficientBalanceException e)
+        {
+            System.out.println("Exception caught: " + e.getMessage());
+        }
+    }
+}
+Output:
+Exception caught: Withdrawal failed: Insufficient balance!
+Withdrawal successful. Remaining balance: 2000.0
+Explanation:
+InsufficientBalanceException is our user-defined exception.
+It extends the Exception class, so it is a checked exception.
+In the withdraw() method, we throw this exception if the withdrawal amount exceeds the balance.
+In main(), we handle it using try-catch.
+This approach makes the program clear, readable, and maintainable.
