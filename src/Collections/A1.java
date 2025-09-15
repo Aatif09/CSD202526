@@ -1,17 +1,23 @@
-package Collections;
+package Collectprac;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-public class A1 {
+public class A1  {
     public static void main(String[] args) {
-        ArrayList list=new ArrayList();
-        list.add("Shubham");
-        list.add(true);
-        list.add(12.5);
 
+        int[] arr={1,2,3,4,5};
+        String [] str={"1","2","3","4","5"};
+
+//        int[] arr=new int[10];
+//        arr[0]=1;
+//        arr[1]=2;
+//
+        for (String i:str){
+            System.out.println(i);
+        }
+//        for (int i = 0; i < arr.length; i++) {
+//            System.out.println(arr[i]);
+//        }
     }
 }
