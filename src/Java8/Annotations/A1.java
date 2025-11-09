@@ -1,5 +1,4 @@
-package Annotations;
-
+package Java8.Annotations;
 class Animal {
     void sound() {
         System.out.println("Some sound");
@@ -9,11 +8,9 @@ class Animal {
 public class A1 extends Animal {
     public static void main(String[] args) {
         A1 a=new A1();
-        a.sound();
-    }
+        a.sound();}
     @Override
     void sound() {
         System.out.println("Bark");
-    }
-}
+    }}
 
